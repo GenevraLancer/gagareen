@@ -4,10 +4,10 @@ The project is named after Yuri Gagarin, the first person to fly the space.
 
 ## CoreStack
 ### Frontend
-Vue.js 3.0.0-rc.5 - Vue 3 для создания интерфейса
-Node.js v14.2.0 - используется для сборки клиентской части и Vue.
-protobufjs с поддержкой TypescriptJS https://github.com/protobufjs/protobuf.js#usage-with-typescript 
-Go client for the NATS messaging system
+- Vue.js 3.0.0-rc.5 - Vue 3 для создания интерфейса
+- Node.js v14.2.0 - используется для сборки клиентской части и Vue.
+- protobufjs с поддержкой TypescriptJS https://github.com/protobufjs/protobuf.js#usage-with-typescript 
+- Go client for the NATS messaging system
 
 ### Backend
 1. Язык написания сервера go 1.15.5 darwin/amd64
