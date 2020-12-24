@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+
+// Defines the import path that should be used to import the generated package and the package name.
+option go_package = "backend/gen/api;myapi";
+
+service FieldService{
+    rpc AddField (AddFieldParams) returns (FieldObject);
+    rpc DeleteField (DeleteFieldParams) returns (deleteFieldResponse);
+    rpc GetField (GetFieldParams) returns (FieldResponse)
+    {
+        // Client example - returns the first field:
+        // curl http://gagarin/fields/1
+        option (google.api.http) = { get: "/fields/{field}" };
+    }
+    //Websocket endpoint
+    rpc Subscribe (SubscribeRequest) returns (stream SubscribeResponse) {
+        option (google.api.http) = {
+            get: "/subscribe"
+        };
+    }
+}
+
+//Request mapped to URL path by option (google.api.http)
+message GetFieldParams{
+    //field ID
+    string field = 1;
+}
+
+message AddFieldParams{
+    string field = 1;
+    string systemName = 2 [json_name = "fieldSystemName"];
+    string engFullName = 3;
+    string engShortName = 4;
+    string label = 5;
+    string comment = 6;
+    string uiElem = 7;
+}
+message DeleteFieldParams{
+    string id = 1;
+}
+
+//Response
+message  FieldObject{
+    string id = 1;
+    string systemName = 2;
+}
+
+//The resource content - fields array
+message FieldResponse{
+    repeated FieldObject fields = 1; 
+}
+
+message deleteFieldResponse{
+    string message = 1;
+}
+
+//Websocket resource content
+message SubscribeRequest {
+    string query = 1;
+}
+message SubscribeResponse {
+    string query = 1;
+    google.protobuf.Struct data = 2;
+    message Event {
+        string key = 1;
+        repeated string events = 2;
+    }
+    repeated Event events = 3;
+}
