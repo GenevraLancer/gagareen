@@ -8,9 +8,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
 
-	"github.com/GenevraLancer/gagarin/backend/gateway"
 	pbField "github.com/GenevraLancer/gagarin/backend/myapi"
-	"github.com/GenevraLancer/gagarin/backend/server"
+	"github.com/GenevraLancer/gagarin/backend/queryhandler"
 
 	//Static files
 	_ "github.com/GenevraLancer/gagarin/backend/statik"
@@ -33,14 +32,11 @@ func main() {
 	// TODO: Replace with your own certificate!
 	//grpc.Creds(credentials.NewServerTLSFromCert(&insecure.Cert)),
 	)
-	pbField.RegisterFieldServiceServer(s, server.New())
+	pbField.RegisterFieldServiceServer(s, queryhandler.New())
 
 	// Serve gRPC Server
 	log.Info("Serving gRPC on https://", addr)
 	go func() {
 		log.Fatal(s.Serve(lis))
 	}()
-
-	err = gateway.Run("dns:///" + addr)
-	log.Fatalln(err)
 }
