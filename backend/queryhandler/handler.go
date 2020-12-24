@@ -3,13 +3,13 @@ package queryhandler
 import (
 	"sync"
 
-	pbField "github.com/GenevraLancer/gagarin/backend/myapi"
+	myapi "github.com/GenevraLancer/gagarin/backend/gen/api"
 )
 
 // QueryService implements the protobuf interface
 type QueryService struct {
 	mu     *sync.RWMutex
-	fields []*pbField.Id
+	fields []*myapi.AddFieldParams
 }
 
 /* // New initializes a new QueryService struct.

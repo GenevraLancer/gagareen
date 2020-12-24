@@ -4,7 +4,6 @@ go 1.15
 
 require (
 	github.com/bufbuild/buf v0.33.0
-	github.com/gofrs/uuid v3.3.0+incompatible // indirect
 	github.com/golang/protobuf v1.4.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.0.1
 	github.com/klauspost/compress v1.11.4 // indirect
