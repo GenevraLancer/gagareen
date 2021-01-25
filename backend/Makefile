@@ -30,7 +30,7 @@
 givemeproto:
 	buf generate --path ./protos/*.proto
 	# Generate static assets for OpenAPI UI
-	statik -m -f -src ../backend/gen/swagger
+	statik -m -f -src third_party/OpenAPI/
 
 install:
 	go get \
@@ -47,4 +47,8 @@ install:
 		# GOOS=linux GOARCH=arm go build -o bin/main-linux-arm main.go
 		# GOOS=linux GOARCH=arm64 go build -o bin/main-linux-arm64 main.go
 		# GOOS=freebsd GOARCH=386 go build -o bin/main-freebsd-386 main.go
-		
+run-server:
+	go run main.go
+
+build-dev:
+	go build ./...

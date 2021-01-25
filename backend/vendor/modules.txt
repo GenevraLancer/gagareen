@@ -80,6 +80,7 @@ github.com/bufbuild/buf/internal/pkg/zaputil
 # github.com/ghodss/yaml v1.0.0
 github.com/ghodss/yaml
 # github.com/gofrs/uuid v3.3.0+incompatible
+## explicit
 github.com/gofrs/uuid
 # github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 github.com/golang/glog

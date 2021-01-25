@@ -23,11 +23,23 @@ services:
     - 9200:9200
     environment:
       - discovery.type=single-node
-#    build: ./server
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: "swagger-ui"
+    ports:
+      - "9245:8080"
+    volumes:
+      - ./swagger:/usr/share/nginx/html/swagger
+    environment:
+      # SWAGGER_JSON: /swagger/field.swagger.json
+      API_URL: "https://localhost:9245/field.swagger.json"
+#  server:
+#    container_name: "gagarin-server"
+#    build: ./backend
 #    image: gagarin-grpc-server:v1
 #    restart: unless-stopped
 #    networks:
-#      - grpc-gagarin
+#       - grpc-gagarin
 networks:
   grpc-gagarin:
     driver: bridge

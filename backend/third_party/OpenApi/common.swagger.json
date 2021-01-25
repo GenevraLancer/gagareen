@@ -1,9 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "field.proto",
-    "version": "version not set"
+    "title": "common.proto",
+    "version": "1.0"
   },
+  "schemes": [
+    "https"
+  ],
   "consumes": [
     "application/json"
   ],
@@ -11,14 +14,15 @@
     "application/json"
   ],
   "paths": {
-    "/fields/{field}": {
-      "get": {
-        "operationId": "FieldService_GetField",
+    "/addField": {
+      "post": {
+        "summary": "Command endpoint",
+        "operationId": "CommonService_AddField",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/FieldResponse"
+              "$ref": "#/definitions/FieldObject"
             }
           },
           "default": {
@@ -30,22 +34,23 @@
         },
         "parameters": [
           {
-            "name": "field",
-            "description": "field ID",
-            "in": "path",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "string"
+            "schema": {
+              "$ref": "#/definitions/AddFieldParams"
+            }
           }
         ],
         "tags": [
-          "FieldService"
+          "CommonService"
         ]
       }
     },
-    "/subscribe": {
+    "/fields/{id}": {
       "get": {
-        "summary": "Websocket endpoint",
-        "operationId": "FieldService_Subscribe",
+        "summary": "Query endpoint",
+        "operationId": "CommonService_GetField",
         "responses": {
           "200": {
             "description": "A successful response.(streaming responses)",
@@ -53,13 +58,13 @@
               "type": "object",
               "properties": {
                 "result": {
-                  "$ref": "#/definitions/SubscribeResponse"
+                  "$ref": "#/definitions/FieldObject"
                 },
                 "error": {
                   "$ref": "#/definitions/rpcStatus"
                 }
               },
-              "title": "Stream result of SubscribeResponse"
+              "title": "Stream result of FieldObject"
             }
           },
           "default": {
@@ -71,19 +76,46 @@
         },
         "parameters": [
           {
-            "name": "query",
-            "in": "query",
-            "required": false,
+            "name": "id",
+            "description": "field ID",
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
         "tags": [
-          "FieldService"
+          "CommonService"
         ]
       }
     }
   },
   "definitions": {
+    "AddFieldParams": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "fieldSystemName": {
+          "type": "string"
+        },
+        "engFullName": {
+          "type": "string"
+        },
+        "engShortName": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "uiElem": {
+          "type": "string"
+        }
+      }
+    },
     "FieldObject": {
       "type": "object",
       "properties": {
@@ -96,57 +128,6 @@
       },
       "title": "Response"
     },
-    "FieldResponse": {
-      "type": "object",
-      "properties": {
-        "fields": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/FieldObject"
-          }
-        }
-      },
-      "title": "The resource content - fields array"
-    },
-    "SubscribeResponse": {
-      "type": "object",
-      "properties": {
-        "query": {
-          "type": "string"
-        },
-        "data": {
-          "type": "object"
-        },
-        "events": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/SubscribeResponseEvent"
-          }
-        }
-      }
-    },
-    "SubscribeResponseEvent": {
-      "type": "object",
-      "properties": {
-        "key": {
-          "type": "string"
-        },
-        "events": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "deleteFieldResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
-        }
-      }
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -158,14 +139,6 @@
           "format": "byte"
         }
       }
-    },
-    "protobufNullValue": {
-      "type": "string",
-      "enum": [
-        "NULL_VALUE"
-      ],
-      "default": "NULL_VALUE",
-      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
     },
     "rpcStatus": {
       "type": "object",

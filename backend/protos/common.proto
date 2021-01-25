@@ -1,45 +1,65 @@
 syntax = "proto3";
 
+import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 
 // Defines the import path that should be used to import the generated package and the package name.
 option go_package = "backend/gen/api;myapi";
 
-service FieldService{
-    rpc AddField (AddFieldParams) returns (FieldObject);
-    rpc DeleteField (DeleteFieldParams) returns (deleteFieldResponse);
-    rpc GetField (GetFieldParams) returns (FieldResponse)
+// These annotations are used when generating the OpenAPI file.
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+      version: "1.0";
+    };
+    schemes: HTTPS;
+  };
+    
+  service CommonService{
+//Command endpoint
+    rpc AddField (AddFieldParams) returns (FieldObject)
     {
         // Client example - returns the first field:
         // curl http://gagarin/fields/1
-        option (google.api.http) = { get: "/fields/{field}" };
+        option (google.api.http) = { 
+            post: "/addField"
+            body: "*"
+        };
     }
-    //Websocket endpoint
+  
+//Query endpoint
+    rpc GetField (GetFieldParams) returns (stream FieldObject)
+    {
+        // Client example - returns the first field:
+        // curl http://gagarin/fields/1
+        option (google.api.http) = { 
+            get: "/fields/{id}" 
+        };
+    }
+//Пример Websocket
+/*    
     rpc Subscribe (SubscribeRequest) returns (stream SubscribeResponse) {
         option (google.api.http) = {
             get: "/subscribe"
         };
     }
+*/
 }
 
 //Request mapped to URL path by option (google.api.http)
 message GetFieldParams{
     //field ID
-    string field = 1;
+    string id = 1;
 }
 
 message AddFieldParams{
-    string field = 1;
+    string id = 1;
     string systemName = 2 [json_name = "fieldSystemName"];
     string engFullName = 3;
     string engShortName = 4;
     string label = 5;
     string comment = 6;
     string uiElem = 7;
-}
-message DeleteFieldParams{
-    string id = 1;
 }
 
 //Response
@@ -48,16 +68,20 @@ message  FieldObject{
     string systemName = 2;
 }
 
-//The resource content - fields array
-message FieldResponse{
-    repeated FieldObject fields = 1; 
+
+//TODO реализовать удаление
+/*
+message DeleteFieldParams{
+    string id = 1;
 }
 
 message deleteFieldResponse{
     string message = 1;
 }
+*/
 
-//Websocket resource content
+//Пример Websocket resource content
+/*
 message SubscribeRequest {
     string query = 1;
 }
@@ -69,4 +93,8 @@ message SubscribeResponse {
         repeated string events = 2;
     }
     repeated Event events = 3;
-}
+*/
+
+
+
+

@@ -10,7 +10,7 @@ plugins:
     out: ../backend/gen/api
     opt: paths=source_relative,logtostderr=true
   - name: openapiv2
-    out: ../backend/gen/swagger
+    out: ./third_party/OpenAPI/
   - name: js
     out: ../client/src/proto
     opt: import_style=commonjs,binary

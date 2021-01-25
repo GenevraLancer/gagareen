@@ -75,103 +75,23 @@ export class FieldServiceClient {
     this.methodInfoAddField);
   }
 
-  methodInfoDeleteField = new grpcWeb.AbstractClientBase.MethodInfo(
-    field_pb.deleteFieldResponse,
-    (request: field_pb.DeleteFieldParams) => {
-      return request.serializeBinary();
-    },
-    field_pb.deleteFieldResponse.deserializeBinary
-  );
-
-  deleteField(
-    request: field_pb.DeleteFieldParams,
-    metadata: grpcWeb.Metadata | null): Promise<field_pb.deleteFieldResponse>;
-
-  deleteField(
-    request: field_pb.DeleteFieldParams,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: field_pb.deleteFieldResponse) => void): grpcWeb.ClientReadableStream<field_pb.deleteFieldResponse>;
-
-  deleteField(
-    request: field_pb.DeleteFieldParams,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: field_pb.deleteFieldResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/FieldService/DeleteField',
-        request,
-        metadata || {},
-        this.methodInfoDeleteField,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/FieldService/DeleteField',
-    request,
-    metadata || {},
-    this.methodInfoDeleteField);
-  }
-
   methodInfoGetField = new grpcWeb.AbstractClientBase.MethodInfo(
-    field_pb.FieldResponse,
+    field_pb.FieldObject,
     (request: field_pb.GetFieldParams) => {
       return request.serializeBinary();
     },
-    field_pb.FieldResponse.deserializeBinary
+    field_pb.FieldObject.deserializeBinary
   );
 
   getField(
     request: field_pb.GetFieldParams,
-    metadata: grpcWeb.Metadata | null): Promise<field_pb.FieldResponse>;
-
-  getField(
-    request: field_pb.GetFieldParams,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: field_pb.FieldResponse) => void): grpcWeb.ClientReadableStream<field_pb.FieldResponse>;
-
-  getField(
-    request: field_pb.GetFieldParams,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: field_pb.FieldResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/FieldService/GetField',
-        request,
-        metadata || {},
-        this.methodInfoGetField,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/FieldService/GetField',
-    request,
-    metadata || {},
-    this.methodInfoGetField);
-  }
-
-  methodInfoSubscribe = new grpcWeb.AbstractClientBase.MethodInfo(
-    field_pb.SubscribeResponse,
-    (request: field_pb.SubscribeRequest) => {
-      return request.serializeBinary();
-    },
-    field_pb.SubscribeResponse.deserializeBinary
-  );
-
-  subscribe(
-    request: field_pb.SubscribeRequest,
     metadata?: grpcWeb.Metadata) {
     return this.client_.serverStreaming(
       this.hostname_ +
-        '/FieldService/Subscribe',
+        '/FieldService/GetField',
       request,
       metadata || {},
-      this.methodInfoSubscribe);
+      this.methodInfoGetField);
   }
 
 }

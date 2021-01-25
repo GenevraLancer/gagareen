@@ -6,10 +6,12 @@ import (
 	"os"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/grpclog"
 
+	"github.com/GenevraLancer/gagarin/backend/gateway"
 	myapi "github.com/GenevraLancer/gagarin/backend/gen/api"
-	queryhandler "github.com/GenevraLancer/gagarin/backend/queryhandler"
+	handlers "github.com/GenevraLancer/gagarin/backend/handlers"
 
 	//Static files
 	_ "github.com/GenevraLancer/gagarin/backend/statik"
@@ -21,22 +23,29 @@ func main() {
 	grpclog.SetLoggerV2(log)
 
 	//Specify the port to listen for client requests
-	addr := "localhost:82000"
+	addr := "localhost:9244"
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatalln("Failed to listen:", err)
 	}
 
 	//Create an instance of the gRPC server
-	s := grpc.NewServer(
 	// TODO: Replace with your own certificate!
-	//grpc.Creds(credentials.NewServerTLSFromCert(&insecure.Cert)),
-	)
-	myapi.RegisterFieldServiceServer(s, queryhandler.New())
+	creds, err := credentials.NewServerTLSFromFile("cert/server.crt", "cert/server.key")
+	if err != nil {
+		log.Fatalln("Failed to load a self-signed certtificate server.crt:", err)
+	}
+
+	s := grpc.NewServer(grpc.Creds(creds))
+
+	myapi.RegisterCommonServiceServer(s, handlers.New())
 
 	// Serve gRPC Server
 	log.Info("Serving gRPC on https://", addr)
 	go func() {
 		log.Fatal(s.Serve(lis))
 	}()
+
+	err = gateway.Run("dns:///" + addr)
+	log.Fatalln(err)
 }

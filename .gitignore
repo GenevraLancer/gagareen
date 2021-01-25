@@ -1,1 +1,7 @@
+.vscode
+.dockerignore
+
 backend/vendor
+client
+envoy
+docker-compose.yml
