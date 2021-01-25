@@ -1,0 +1,19 @@
+version: v1beta1
+plugins:
+  - name: go
+    out: ../backend/gen/api
+    opt: paths=source_relative
+  - name: go-grpc
+    out: ../backend/gen/api
+    opt: paths=source_relative
+  - name: grpc-gateway
+    out: ../backend/gen/api
+    opt: paths=source_relative,logtostderr=true
+  - name: openapiv2
+    out: ./third_party/OpenAPI/
+  - name: js
+    out: ../client/src/proto
+    opt: import_style=commonjs,binary
+  - name: grpc-web
+    out: ../client/src/proto
+    opt: import_style=typescript,mode=grpcwebtext

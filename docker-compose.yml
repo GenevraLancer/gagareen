@@ -1,0 +1,45 @@
+version: '3.8'
+
+services: 
+#  web:
+#    build: ./client
+#    image: gagarin-grpc-client:v1
+#    ports: 
+#      - 3000:3000
+#    restart: unless-stopped
+#    networks:
+#      - grpc-gagarin
+  proxy:
+    build: ./envoy
+    image: gagarin-grpc-envoy:v1
+    ports: 
+      - 8080:8080
+    restart: unless-stopped
+    networks: 
+      - grpc-gagarin
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3-arm64
+    ports:
+    - 9200:9200
+    environment:
+      - discovery.type=single-node
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: "swagger-ui"
+    ports:
+      - "9245:8080"
+    volumes:
+      - ./swagger:/usr/share/nginx/html/swagger
+    environment:
+      # SWAGGER_JSON: /swagger/field.swagger.json
+      API_URL: "https://localhost:9245/field.swagger.json"
+#  server:
+#    container_name: "gagarin-server"
+#    build: ./backend
+#    image: gagarin-grpc-server:v1
+#    restart: unless-stopped
+#    networks:
+#       - grpc-gagarin
+networks:
+  grpc-gagarin:
+    driver: bridge
