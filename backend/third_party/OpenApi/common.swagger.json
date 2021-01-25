@@ -93,25 +93,7 @@
     "AddFieldParams": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string"
-        },
         "fieldSystemName": {
-          "type": "string"
-        },
-        "engFullName": {
-          "type": "string"
-        },
-        "engShortName": {
-          "type": "string"
-        },
-        "label": {
-          "type": "string"
-        },
-        "comment": {
-          "type": "string"
-        },
-        "uiElem": {
           "type": "string"
         }
       }

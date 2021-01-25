@@ -24,26 +24,8 @@ export namespace GetFieldParams {
 }
 
 export class AddFieldParams extends jspb.Message {
-  getId(): string;
-  setId(value: string): AddFieldParams;
-
   getSystemname(): string;
   setSystemname(value: string): AddFieldParams;
-
-  getEngfullname(): string;
-  setEngfullname(value: string): AddFieldParams;
-
-  getEngshortname(): string;
-  setEngshortname(value: string): AddFieldParams;
-
-  getLabel(): string;
-  setLabel(value: string): AddFieldParams;
-
-  getComment(): string;
-  setComment(value: string): AddFieldParams;
-
-  getUielem(): string;
-  setUielem(value: string): AddFieldParams;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AddFieldParams.AsObject;
@@ -55,13 +37,7 @@ export class AddFieldParams extends jspb.Message {
 
 export namespace AddFieldParams {
   export type AsObject = {
-    id: string,
     systemname: string,
-    engfullname: string,
-    engshortname: string,
-    label: string,
-    comment: string,
-    uielem: string,
   }
 }
 

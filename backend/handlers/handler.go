@@ -38,12 +38,13 @@ func (cs *CommonService) GetField(_ *myapi.GetFieldParams, srv myapi.CommonServi
 }
 
 // AddField adds a field to the in-memory store.
-func (cs *CommonService) AddField(ctx context.Context, _ *myapi.AddFieldParams) (*myapi.FieldObject, error) {
+func (cs *CommonService) AddField(ctx context.Context, req *myapi.AddFieldParams) (*myapi.FieldObject, error) {
 	cs.mu.Lock()
 	defer cs.mu.Unlock()
 
 	field := &myapi.FieldObject{
-		Id: uuid.Must(uuid.NewV4()).String(),
+		Id:         uuid.Must(uuid.NewV4()).String(),
+		SystemName: req.GetSystemName(),
 	}
 	cs.fields = append(cs.fields, field)
 

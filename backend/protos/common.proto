@@ -53,13 +53,12 @@ message GetFieldParams{
 }
 
 message AddFieldParams{
-    string id = 1;
     string systemName = 2 [json_name = "fieldSystemName"];
-    string engFullName = 3;
-    string engShortName = 4;
-    string label = 5;
-    string comment = 6;
-    string uiElem = 7;
+//    string engFullName = 3;
+//    string engShortName = 4;
+//    string label = 5;
+//    string comment = 6;
+//    string uiElem = 7;
 }
 
 //Response

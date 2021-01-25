@@ -248,13 +248,7 @@ proto.AddFieldParams.prototype.toObject = function(opt_includeInstance) {
  */
 proto.AddFieldParams.toObject = function(includeInstance, msg) {
   var f, obj = {
-    id: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    systemname: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    engfullname: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    engshortname: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    label: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    comment: jspb.Message.getFieldWithDefault(msg, 6, ""),
-    uielem: jspb.Message.getFieldWithDefault(msg, 7, "")
+    systemname: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -291,33 +285,9 @@ proto.AddFieldParams.deserializeBinaryFromReader = function(msg, reader) {
     }
     var field = reader.getFieldNumber();
     switch (field) {
-    case 1:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setId(value);
-      break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
       msg.setSystemname(value);
-      break;
-    case 3:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setEngfullname(value);
-      break;
-    case 4:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setEngshortname(value);
-      break;
-    case 5:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setLabel(value);
-      break;
-    case 6:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setComment(value);
-      break;
-    case 7:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setUielem(value);
       break;
     default:
       reader.skipField();
@@ -348,13 +318,6 @@ proto.AddFieldParams.prototype.serializeBinary = function() {
  */
 proto.AddFieldParams.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getId();
-  if (f.length > 0) {
-    writer.writeString(
-      1,
-      f
-    );
-  }
   f = message.getSystemname();
   if (f.length > 0) {
     writer.writeString(
@@ -362,59 +325,6 @@ proto.AddFieldParams.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getEngfullname();
-  if (f.length > 0) {
-    writer.writeString(
-      3,
-      f
-    );
-  }
-  f = message.getEngshortname();
-  if (f.length > 0) {
-    writer.writeString(
-      4,
-      f
-    );
-  }
-  f = message.getLabel();
-  if (f.length > 0) {
-    writer.writeString(
-      5,
-      f
-    );
-  }
-  f = message.getComment();
-  if (f.length > 0) {
-    writer.writeString(
-      6,
-      f
-    );
-  }
-  f = message.getUielem();
-  if (f.length > 0) {
-    writer.writeString(
-      7,
-      f
-    );
-  }
-};
-
-
-/**
- * optional string id = 1;
- * @return {string}
- */
-proto.AddFieldParams.prototype.getId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.AddFieldParams} returns this
- */
-proto.AddFieldParams.prototype.setId = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -433,96 +343,6 @@ proto.AddFieldParams.prototype.getSystemname = function() {
  */
 proto.AddFieldParams.prototype.setSystemname = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-/**
- * optional string engFullName = 3;
- * @return {string}
- */
-proto.AddFieldParams.prototype.getEngfullname = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.AddFieldParams} returns this
- */
-proto.AddFieldParams.prototype.setEngfullname = function(value) {
-  return jspb.Message.setProto3StringField(this, 3, value);
-};
-
-
-/**
- * optional string engShortName = 4;
- * @return {string}
- */
-proto.AddFieldParams.prototype.getEngshortname = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.AddFieldParams} returns this
- */
-proto.AddFieldParams.prototype.setEngshortname = function(value) {
-  return jspb.Message.setProto3StringField(this, 4, value);
-};
-
-
-/**
- * optional string label = 5;
- * @return {string}
- */
-proto.AddFieldParams.prototype.getLabel = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.AddFieldParams} returns this
- */
-proto.AddFieldParams.prototype.setLabel = function(value) {
-  return jspb.Message.setProto3StringField(this, 5, value);
-};
-
-
-/**
- * optional string comment = 6;
- * @return {string}
- */
-proto.AddFieldParams.prototype.getComment = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.AddFieldParams} returns this
- */
-proto.AddFieldParams.prototype.setComment = function(value) {
-  return jspb.Message.setProto3StringField(this, 6, value);
-};
-
-
-/**
- * optional string uiElem = 7;
- * @return {string}
- */
-proto.AddFieldParams.prototype.getUielem = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.AddFieldParams} returns this
- */
-proto.AddFieldParams.prototype.setUielem = function(value) {
-  return jspb.Message.setProto3StringField(this, 7, value);
 };
 
 
