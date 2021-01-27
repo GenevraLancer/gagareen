@@ -75,7 +75,26 @@ export class CommonServiceClient {
     this.methodInfoAddField);
   }
 
-  methodInfoBulkGetField = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoBulkGetFields = new grpcWeb.AbstractClientBase.MethodInfo(
+    common_pb.FieldObject,
+    (request: common_pb.BulkFields) => {
+      return request.serializeBinary();
+    },
+    common_pb.FieldObject.deserializeBinary
+  );
+
+  bulkGetFields(
+    request: common_pb.BulkFields,
+    metadata?: grpcWeb.Metadata) {
+    return this.client_.serverStreaming(
+      this.hostname_ +
+        '/CommonService/BulkGetFields',
+      request,
+      metadata || {},
+      this.methodInfoBulkGetFields);
+  }
+
+  methodInfoGetField = new grpcWeb.AbstractClientBase.MethodInfo(
     common_pb.FieldObject,
     (request: common_pb.GetFieldParams) => {
       return request.serializeBinary();
@@ -83,15 +102,36 @@ export class CommonServiceClient {
     common_pb.FieldObject.deserializeBinary
   );
 
-  bulkGetField(
+  getField(
     request: common_pb.GetFieldParams,
-    metadata?: grpcWeb.Metadata) {
-    return this.client_.serverStreaming(
-      this.hostname_ +
-        '/CommonService/BulkGetField',
-      request,
-      metadata || {},
-      this.methodInfoBulkGetField);
+    metadata: grpcWeb.Metadata | null): Promise<common_pb.FieldObject>;
+
+  getField(
+    request: common_pb.GetFieldParams,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: common_pb.FieldObject) => void): grpcWeb.ClientReadableStream<common_pb.FieldObject>;
+
+  getField(
+    request: common_pb.GetFieldParams,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: common_pb.FieldObject) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/CommonService/GetField',
+        request,
+        metadata || {},
+        this.methodInfoGetField,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/CommonService/GetField',
+    request,
+    metadata || {},
+    this.methodInfoGetField);
   }
 
 }

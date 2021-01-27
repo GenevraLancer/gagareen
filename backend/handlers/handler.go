@@ -6,6 +6,8 @@ import (
 
 	myapi "github.com/GenevraLancer/gagarin/backend/gen/api"
 	"github.com/gofrs/uuid"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 // CommonService implements the protobuf interface
@@ -23,7 +25,7 @@ func New() *CommonService {
 }
 
 // GetFields lists all fields in the store.
-func (cs *CommonService) BulkGetField(_ *myapi.GetFieldParams, srv myapi.CommonService_BulkGetFieldServer) error {
+func (cs *CommonService) BulkGetFields(_ *myapi.BulkFields, srv myapi.CommonService_BulkGetFieldsServer) error {
 	cs.mu.RLock()         //lock только на чтение данных
 	defer cs.mu.RUnlock() //unlock чтения данных через defer
 
@@ -37,6 +39,7 @@ func (cs *CommonService) BulkGetField(_ *myapi.GetFieldParams, srv myapi.CommonS
 	return nil
 }
 
+
 // AddField adds a field to the in-memory store.
 func (cs *CommonService) AddField(ctx context.Context, req *myapi.AddFieldParams) (*myapi.FieldObject, error) {
 	cs.mu.Lock()
@@ -49,4 +52,19 @@ func (cs *CommonService) AddField(ctx context.Context, req *myapi.AddFieldParams
 	cs.fields = append(cs.fields, field)
 
 	return field, nil
+}
+
+// GetField get a field from the in-memory store by id.
+func (cs *CommonService) GetField(ctx context.Context, req *myapi.GetFieldParams) (*myapi.FieldObject, error) {
+	cs.mu.Lock()
+	defer cs.mu.Unlock()
+
+	for _, field := range cs.fields {
+		err := srv.Send(field)
+		if field.Id == req.GetId(){
+			return field, nil
+		}
+	}
+
+	return nil, status.Error(codes.NotFound, msg "пользователь с ID %q не найден", req.req.GetId())
 }

@@ -47,10 +47,10 @@
         ]
       }
     },
-    "/api/v1/fields/{id}": {
+    "/api/v1/fields": {
       "get": {
         "summary": "Query endpoint",
-        "operationId": "CommonService_BulkGetField",
+        "operationId": "CommonService_BulkGetFields",
         "responses": {
           "200": {
             "description": "A successful response.(streaming responses)",
@@ -65,6 +65,29 @@
                 }
               },
               "title": "Stream result of FieldObject"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "CommonService"
+        ]
+      }
+    },
+    "/api/v1/fields/{id}": {
+      "get": {
+        "summary": "Query endpoint",
+        "operationId": "CommonService_GetField",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FieldObject"
             }
           },
           "default": {

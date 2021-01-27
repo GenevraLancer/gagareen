@@ -20,7 +20,9 @@ type CommonServiceClient interface {
 	//Command endpoint
 	AddField(ctx context.Context, in *AddFieldParams, opts ...grpc.CallOption) (*FieldObject, error)
 	//Query endpoint
-	BulkGetField(ctx context.Context, in *GetFieldParams, opts ...grpc.CallOption) (CommonService_BulkGetFieldClient, error)
+	BulkGetFields(ctx context.Context, in *BulkFields, opts ...grpc.CallOption) (CommonService_BulkGetFieldsClient, error)
+	//Query endpoint
+	GetField(ctx context.Context, in *GetFieldParams, opts ...grpc.CallOption) (*FieldObject, error)
 }
 
 type commonServiceClient struct {
@@ -40,12 +42,12 @@ func (c *commonServiceClient) AddField(ctx context.Context, in *AddFieldParams, 
 	return out, nil
 }
 
-func (c *commonServiceClient) BulkGetField(ctx context.Context, in *GetFieldParams, opts ...grpc.CallOption) (CommonService_BulkGetFieldClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_CommonService_serviceDesc.Streams[0], "/CommonService/BulkGetField", opts...)
+func (c *commonServiceClient) BulkGetFields(ctx context.Context, in *BulkFields, opts ...grpc.CallOption) (CommonService_BulkGetFieldsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_CommonService_serviceDesc.Streams[0], "/CommonService/BulkGetFields", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &commonServiceBulkGetFieldClient{stream}
+	x := &commonServiceBulkGetFieldsClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -55,21 +57,30 @@ func (c *commonServiceClient) BulkGetField(ctx context.Context, in *GetFieldPara
 	return x, nil
 }
 
-type CommonService_BulkGetFieldClient interface {
+type CommonService_BulkGetFieldsClient interface {
 	Recv() (*FieldObject, error)
 	grpc.ClientStream
 }
 
-type commonServiceBulkGetFieldClient struct {
+type commonServiceBulkGetFieldsClient struct {
 	grpc.ClientStream
 }
 
-func (x *commonServiceBulkGetFieldClient) Recv() (*FieldObject, error) {
+func (x *commonServiceBulkGetFieldsClient) Recv() (*FieldObject, error) {
 	m := new(FieldObject)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
+}
+
+func (c *commonServiceClient) GetField(ctx context.Context, in *GetFieldParams, opts ...grpc.CallOption) (*FieldObject, error) {
+	out := new(FieldObject)
+	err := c.cc.Invoke(ctx, "/CommonService/GetField", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 // CommonServiceServer is the server API for CommonService service.
@@ -79,7 +90,9 @@ type CommonServiceServer interface {
 	//Command endpoint
 	AddField(context.Context, *AddFieldParams) (*FieldObject, error)
 	//Query endpoint
-	BulkGetField(*GetFieldParams, CommonService_BulkGetFieldServer) error
+	BulkGetFields(*BulkFields, CommonService_BulkGetFieldsServer) error
+	//Query endpoint
+	GetField(context.Context, *GetFieldParams) (*FieldObject, error)
 	mustEmbedUnimplementedCommonServiceServer()
 }
 
@@ -90,8 +103,11 @@ type UnimplementedCommonServiceServer struct {
 func (UnimplementedCommonServiceServer) AddField(context.Context, *AddFieldParams) (*FieldObject, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddField not implemented")
 }
-func (UnimplementedCommonServiceServer) BulkGetField(*GetFieldParams, CommonService_BulkGetFieldServer) error {
-	return status.Errorf(codes.Unimplemented, "method BulkGetField not implemented")
+func (UnimplementedCommonServiceServer) BulkGetFields(*BulkFields, CommonService_BulkGetFieldsServer) error {
+	return status.Errorf(codes.Unimplemented, "method BulkGetFields not implemented")
+}
+func (UnimplementedCommonServiceServer) GetField(context.Context, *GetFieldParams) (*FieldObject, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetField not implemented")
 }
 func (UnimplementedCommonServiceServer) mustEmbedUnimplementedCommonServiceServer() {}
 
@@ -124,25 +140,43 @@ func _CommonService_AddField_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CommonService_BulkGetField_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(GetFieldParams)
+func _CommonService_BulkGetFields_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(BulkFields)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(CommonServiceServer).BulkGetField(m, &commonServiceBulkGetFieldServer{stream})
+	return srv.(CommonServiceServer).BulkGetFields(m, &commonServiceBulkGetFieldsServer{stream})
 }
 
-type CommonService_BulkGetFieldServer interface {
+type CommonService_BulkGetFieldsServer interface {
 	Send(*FieldObject) error
 	grpc.ServerStream
 }
 
-type commonServiceBulkGetFieldServer struct {
+type commonServiceBulkGetFieldsServer struct {
 	grpc.ServerStream
 }
 
-func (x *commonServiceBulkGetFieldServer) Send(m *FieldObject) error {
+func (x *commonServiceBulkGetFieldsServer) Send(m *FieldObject) error {
 	return x.ServerStream.SendMsg(m)
+}
+
+func _CommonService_GetField_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFieldParams)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServiceServer).GetField(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/CommonService/GetField",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServiceServer).GetField(ctx, req.(*GetFieldParams))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 var _CommonService_serviceDesc = grpc.ServiceDesc{
@@ -153,11 +187,15 @@ var _CommonService_serviceDesc = grpc.ServiceDesc{
 			MethodName: "AddField",
 			Handler:    _CommonService_AddField_Handler,
 		},
+		{
+			MethodName: "GetField",
+			Handler:    _CommonService_GetField_Handler,
+		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "BulkGetField",
-			Handler:       _CommonService_BulkGetField_Handler,
+			StreamName:    "BulkGetFields",
+			Handler:       _CommonService_BulkGetFields_Handler,
 			ServerStreams: true,
 		},
 	},

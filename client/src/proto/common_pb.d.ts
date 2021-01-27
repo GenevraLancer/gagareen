@@ -5,6 +5,20 @@ import * as google_api_annotations_pb from './google/api/annotations_pb';
 import * as google_protobuf_struct_pb from 'google-protobuf/google/protobuf/struct_pb';
 
 
+export class BulkFields extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): BulkFields.AsObject;
+  static toObject(includeInstance: boolean, msg: BulkFields): BulkFields.AsObject;
+  static serializeBinaryToWriter(message: BulkFields, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): BulkFields;
+  static deserializeBinaryFromReader(message: BulkFields, reader: jspb.BinaryReader): BulkFields;
+}
+
+export namespace BulkFields {
+  export type AsObject = {
+  }
+}
+
 export class GetFieldParams extends jspb.Message {
   getId(): string;
   setId(value: string): GetFieldParams;
