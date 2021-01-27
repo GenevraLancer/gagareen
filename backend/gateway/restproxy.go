@@ -83,7 +83,7 @@ func Run(dialAddr string) error {
 			oa.ServeHTTP(w, r)
 		}),
 	}
-	log.Fatal(gwServer.ListenAndServe())
+	//log.Fatal(gwServer.ListenAndServe())
 
 	// Empty parameters mean use the TLS Config specified with the server.
 	if strings.ToLower(os.Getenv("SERVE_HTTP")) == "true" {

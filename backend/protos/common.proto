@@ -19,8 +19,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 //Command endpoint
     rpc AddField (AddFieldParams) returns (FieldObject)
     {
-        // Client example - returns the first field:
-        // curl http://gagarin/fields/1
+        // Client example - post field by SystemName:
         option (google.api.http) = { 
             post: "/api/v1/addField"
             body: "*"
@@ -28,14 +27,25 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     }
   
 //Query endpoint
-    rpc BulkGetField (GetFieldParams) returns (stream FieldObject)
+    rpc BulkGetFields (BulkFields) returns (stream FieldObject)
     {
-        // Client example - returns the first field:
-        // curl http://gagarin/fields/1
+        // Client example - returns the list all fields:
+        // curl http://gagarin/fields/
         option (google.api.http) = { 
-            get: "/api/v1/fields/{id}" 
+            get: "/api/v1/fields" 
         };
     }
+
+   //Query endpoint
+    rpc GetField (GetFieldParams) returns (FieldObject)
+{
+    // Client example - returns the first field:
+    // curl http://gagarin/fields/1
+    option (google.api.http) = { 
+        get: "/api/v1/fields/{id}" 
+    };
+}
+
 //Пример Websocket
 /*    
     rpc Subscribe (SubscribeRequest) returns (stream SubscribeResponse) {
@@ -47,6 +57,8 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 }
 
 //Request mapped to URL path by option (google.api.http)
+message BulkFields{}
+
 message GetFieldParams{
     //field ID
     string id = 1;
