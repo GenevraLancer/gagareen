@@ -22,18 +22,18 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
         // Client example - returns the first field:
         // curl http://gagarin/fields/1
         option (google.api.http) = { 
-            post: "/addField"
+            post: "/api/v1/addField"
             body: "*"
         };
     }
   
 //Query endpoint
-    rpc GetField (GetFieldParams) returns (stream FieldObject)
+    rpc BulkGetField (GetFieldParams) returns (stream FieldObject)
     {
         // Client example - returns the first field:
         // curl http://gagarin/fields/1
         option (google.api.http) = { 
-            get: "/fields/{id}" 
+            get: "/api/v1/fields/{id}" 
         };
     }
 //Пример Websocket

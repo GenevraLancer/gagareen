@@ -75,7 +75,7 @@ export class CommonServiceClient {
     this.methodInfoAddField);
   }
 
-  methodInfoGetField = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoBulkGetField = new grpcWeb.AbstractClientBase.MethodInfo(
     common_pb.FieldObject,
     (request: common_pb.GetFieldParams) => {
       return request.serializeBinary();
@@ -83,15 +83,15 @@ export class CommonServiceClient {
     common_pb.FieldObject.deserializeBinary
   );
 
-  getField(
+  bulkGetField(
     request: common_pb.GetFieldParams,
     metadata?: grpcWeb.Metadata) {
     return this.client_.serverStreaming(
       this.hostname_ +
-        '/CommonService/GetField',
+        '/CommonService/BulkGetField',
       request,
       metadata || {},
-      this.methodInfoGetField);
+      this.methodInfoBulkGetField);
   }
 
 }

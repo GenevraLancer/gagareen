@@ -23,7 +23,7 @@ func New() *CommonService {
 }
 
 // GetFields lists all fields in the store.
-func (cs *CommonService) GetField(_ *myapi.GetFieldParams, srv myapi.CommonService_GetFieldServer) error {
+func (cs *CommonService) BulkGetField(_ *myapi.GetFieldParams, srv myapi.CommonService_BulkGetFieldServer) error {
 	cs.mu.RLock()         //lock только на чтение данных
 	defer cs.mu.RUnlock() //unlock чтения данных через defer
 

@@ -20,7 +20,7 @@ type CommonServiceClient interface {
 	//Command endpoint
 	AddField(ctx context.Context, in *AddFieldParams, opts ...grpc.CallOption) (*FieldObject, error)
 	//Query endpoint
-	GetField(ctx context.Context, in *GetFieldParams, opts ...grpc.CallOption) (CommonService_GetFieldClient, error)
+	BulkGetField(ctx context.Context, in *GetFieldParams, opts ...grpc.CallOption) (CommonService_BulkGetFieldClient, error)
 }
 
 type commonServiceClient struct {
@@ -40,12 +40,12 @@ func (c *commonServiceClient) AddField(ctx context.Context, in *AddFieldParams, 
 	return out, nil
 }
 
-func (c *commonServiceClient) GetField(ctx context.Context, in *GetFieldParams, opts ...grpc.CallOption) (CommonService_GetFieldClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_CommonService_serviceDesc.Streams[0], "/CommonService/GetField", opts...)
+func (c *commonServiceClient) BulkGetField(ctx context.Context, in *GetFieldParams, opts ...grpc.CallOption) (CommonService_BulkGetFieldClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_CommonService_serviceDesc.Streams[0], "/CommonService/BulkGetField", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &commonServiceGetFieldClient{stream}
+	x := &commonServiceBulkGetFieldClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -55,16 +55,16 @@ func (c *commonServiceClient) GetField(ctx context.Context, in *GetFieldParams, 
 	return x, nil
 }
 
-type CommonService_GetFieldClient interface {
+type CommonService_BulkGetFieldClient interface {
 	Recv() (*FieldObject, error)
 	grpc.ClientStream
 }
 
-type commonServiceGetFieldClient struct {
+type commonServiceBulkGetFieldClient struct {
 	grpc.ClientStream
 }
 
-func (x *commonServiceGetFieldClient) Recv() (*FieldObject, error) {
+func (x *commonServiceBulkGetFieldClient) Recv() (*FieldObject, error) {
 	m := new(FieldObject)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ type CommonServiceServer interface {
 	//Command endpoint
 	AddField(context.Context, *AddFieldParams) (*FieldObject, error)
 	//Query endpoint
-	GetField(*GetFieldParams, CommonService_GetFieldServer) error
+	BulkGetField(*GetFieldParams, CommonService_BulkGetFieldServer) error
 	mustEmbedUnimplementedCommonServiceServer()
 }
 
@@ -90,8 +90,8 @@ type UnimplementedCommonServiceServer struct {
 func (UnimplementedCommonServiceServer) AddField(context.Context, *AddFieldParams) (*FieldObject, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddField not implemented")
 }
-func (UnimplementedCommonServiceServer) GetField(*GetFieldParams, CommonService_GetFieldServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetField not implemented")
+func (UnimplementedCommonServiceServer) BulkGetField(*GetFieldParams, CommonService_BulkGetFieldServer) error {
+	return status.Errorf(codes.Unimplemented, "method BulkGetField not implemented")
 }
 func (UnimplementedCommonServiceServer) mustEmbedUnimplementedCommonServiceServer() {}
 
@@ -124,24 +124,24 @@ func _CommonService_AddField_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CommonService_GetField_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _CommonService_BulkGetField_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(GetFieldParams)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(CommonServiceServer).GetField(m, &commonServiceGetFieldServer{stream})
+	return srv.(CommonServiceServer).BulkGetField(m, &commonServiceBulkGetFieldServer{stream})
 }
 
-type CommonService_GetFieldServer interface {
+type CommonService_BulkGetFieldServer interface {
 	Send(*FieldObject) error
 	grpc.ServerStream
 }
 
-type commonServiceGetFieldServer struct {
+type commonServiceBulkGetFieldServer struct {
 	grpc.ServerStream
 }
 
-func (x *commonServiceGetFieldServer) Send(m *FieldObject) error {
+func (x *commonServiceBulkGetFieldServer) Send(m *FieldObject) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -156,8 +156,8 @@ var _CommonService_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "GetField",
-			Handler:       _CommonService_GetField_Handler,
+			StreamName:    "BulkGetField",
+			Handler:       _CommonService_BulkGetField_Handler,
 			ServerStreams: true,
 		},
 	},

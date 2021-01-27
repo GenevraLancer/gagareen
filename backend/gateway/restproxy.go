@@ -74,6 +74,7 @@ func Run(dialAddr string) error {
 	gatewayAddr := "localhost:" + port
 	gwServer := &http.Server{
 		Addr: gatewayAddr,
+		//Возвращает oa http.handler (OpenApiHandler), если url содержит /api
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if strings.HasPrefix(r.URL.Path, "/api") {
 				gwmux.ServeHTTP(w, r)
@@ -82,6 +83,8 @@ func Run(dialAddr string) error {
 			oa.ServeHTTP(w, r)
 		}),
 	}
+	log.Fatal(gwServer.ListenAndServe())
+
 	// Empty parameters mean use the TLS Config specified with the server.
 	if strings.ToLower(os.Getenv("SERVE_HTTP")) == "true" {
 		log.Info("Serving gRPC-Gateway and OpenAPI Documentation on http://", gatewayAddr)

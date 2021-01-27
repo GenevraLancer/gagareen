@@ -65,7 +65,7 @@ func local_request_CommonService_AddField_0(ctx context.Context, marshaler runti
 
 }
 
-func request_CommonService_GetField_0(ctx context.Context, marshaler runtime.Marshaler, client CommonServiceClient, req *http.Request, pathParams map[string]string) (CommonService_GetFieldClient, runtime.ServerMetadata, error) {
+func request_CommonService_BulkGetField_0(ctx context.Context, marshaler runtime.Marshaler, client CommonServiceClient, req *http.Request, pathParams map[string]string) (CommonService_BulkGetFieldClient, runtime.ServerMetadata, error) {
 	var protoReq GetFieldParams
 	var metadata runtime.ServerMetadata
 
@@ -86,7 +86,7 @@ func request_CommonService_GetField_0(ctx context.Context, marshaler runtime.Mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
-	stream, err := client.GetField(ctx, &protoReq)
+	stream, err := client.BulkGetField(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
 	}
@@ -128,7 +128,7 @@ func RegisterCommonServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 
 	})
 
-	mux.Handle("GET", pattern_CommonService_GetField_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_CommonService_BulkGetField_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -196,23 +196,23 @@ func RegisterCommonServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 
 	})
 
-	mux.Handle("GET", pattern_CommonService_GetField_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_CommonService_BulkGetField_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/.CommonService/GetField")
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/.CommonService/BulkGetField")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_CommonService_GetField_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_CommonService_BulkGetField_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_CommonService_GetField_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_CommonService_BulkGetField_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -220,13 +220,13 @@ func RegisterCommonServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 }
 
 var (
-	pattern_CommonService_AddField_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"addField"}, ""))
+	pattern_CommonService_AddField_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "addField"}, ""))
 
-	pattern_CommonService_GetField_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"fields", "id"}, ""))
+	pattern_CommonService_BulkGetField_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "fields", "id"}, ""))
 )
 
 var (
 	forward_CommonService_AddField_0 = runtime.ForwardResponseMessage
 
-	forward_CommonService_GetField_0 = runtime.ForwardResponseStream
+	forward_CommonService_BulkGetField_0 = runtime.ForwardResponseStream
 )
