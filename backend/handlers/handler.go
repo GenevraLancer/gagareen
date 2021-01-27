@@ -39,7 +39,6 @@ func (cs *CommonService) BulkGetFields(_ *myapi.BulkFields, srv myapi.CommonServ
 	return nil
 }
 
-
 // AddField adds a field to the in-memory store.
 func (cs *CommonService) AddField(ctx context.Context, req *myapi.AddFieldParams) (*myapi.FieldObject, error) {
 	cs.mu.Lock()
@@ -60,11 +59,10 @@ func (cs *CommonService) GetField(ctx context.Context, req *myapi.GetFieldParams
 	defer cs.mu.Unlock()
 
 	for _, field := range cs.fields {
-		err := srv.Send(field)
-		if field.Id == req.GetId(){
+		if field.Id == req.GetId() {
 			return field, nil
 		}
 	}
 
-	return nil, status.Error(codes.NotFound, msg "пользователь с ID %q не найден", req.req.GetId())
+	return nil, status.Errorf(codes.NotFound, "пользователь с ID %q не найден", req.GetId())
 }
