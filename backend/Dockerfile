@@ -34,15 +34,16 @@ RUN mkdir /gagarin/backend
 WORKDIR /gagarin/backend
 
 env GO111MODULE=on
+env GOBIN=/usr/local/go/bin
 # env GOPATH=/usr/local/go/bin
-arg GOPROXY
+# arg GOPROXY
 
 add go.mod go.sum ./
 run go mod download
 
 add . ./
 run make givemeproto
-run CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o /go/bin/gagarin/backend
+run CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -mod=vendor -a -installsuffix cgo -o /go/bin/gagarin/backend
 
 from scratch
 #entrypoint 

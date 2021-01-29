@@ -28,9 +28,9 @@
 	# Generate static assets for OpenAPI UI
 	#statik -m -f -src third_party/OpenAPI/
 givemeproto:
-	buf generate --path ./protos/*.proto
+	@buf generate --path ./protos/*.proto
 	# Generate static assets for OpenAPI UI
-	statik -m -f -src third_party/OpenAPI/
+	@statik -m -f -src third_party/OpenAPI/
 
 get-tools:
 	go get \
