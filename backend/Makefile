@@ -32,7 +32,7 @@ givemeproto:
 	# Generate static assets for OpenAPI UI
 	statik -m -f -src third_party/OpenAPI/
 
-install:
+get-tools:
 	go get \
 		github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
     	github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
@@ -42,6 +42,15 @@ install:
 		github.com/bufbuild/buf/cmd/buf \
 		golang.org/x/tools/gopls
 
+install-tools: get-tools
+	go install \
+		github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
+    	github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
+    	google.golang.org/protobuf/cmd/protoc-gen-go \
+    	google.golang.org/grpc/cmd/protoc-gen-go-grpc \
+		github.com/rakyll/statik \
+		github.com/bufbuild/buf/cmd/buf \
+		golang.org/x/tools/gopls
 	# compile:
 		# echo "Compiling for every OS and Platform"
 		# GOOS=linux GOARCH=arm go build -o bin/main-linux-arm main.go
@@ -57,9 +66,10 @@ build-prod: givemeproto
 	go build -o /bin/gagarin
 
 download:
-  @echo Download go.mod dependencies
-  @go mod download
+	@echo Download go.mod dependencies
+	@go mod download
 
-install-tools: download
-  @echo Installing tools from tools.go
-  @cat tools.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go install %
+install-tools2: download
+	@echo Installing tools from tools.go
+	@cat tools.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go install %
+	\
