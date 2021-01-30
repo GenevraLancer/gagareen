@@ -26,26 +26,29 @@
 
 
 
-from golang:1.15-alpine as build
-run apk add --no-cache git make ca-certificates
+from golang:1.15-alpine as build-env
+run apk add --no-cache git make
 
-RUN mkdir /gagarin
-RUN mkdir /gagarin/backend
+# add Makefile /go
+# RUN make install-tools
+
+RUN mkdir /gagarin /gagarin/backend
 WORKDIR /gagarin/backend
 
 env GO111MODULE=on
-env GOBIN=/usr/local/go/bin
-# env GOPATH=/usr/local/go/bin
+env GOBIN=/go/bin
 # arg GOPROXY
 
 add go.mod go.sum ./
 run go mod download
 
 add . ./
-run make givemeproto
-run CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -mod=vendor -a -installsuffix cgo -o /go/bin/gagarin/backend
+# RUN make install-tools
+# run make givemeproto
+run CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o main .
 
 from scratch
+run apk add --no-cache ca-certificates
 #entrypoint 
 copy --from=build-env /go/bin/gagarin/backend /go/bin/gagarin/backend
 ENTRYPOINT ["/go/bin/gagarin/backend"]

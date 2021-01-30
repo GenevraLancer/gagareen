@@ -1,0 +1,17 @@
+FROM golang:1.15
+
+RUN mkdir /gagarin /gagarin/backend
+WORKDIR /gagarin/backend
+
+ADD go.mod go.sum ./
+RUN go mod download
+ADD main.go .
+ADD cert cert
+ADD gateway gateway
+ADD ./gen/api ./gen/api
+ADD handlers handlers
+ADD statik statik
+
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags "-s" -a -installsuffix cgo -o main .
+
+CMD ["/bin/bash"]
