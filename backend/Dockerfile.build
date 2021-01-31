@@ -1,4 +1,5 @@
-FROM golang:1.15
+FROM golang:1.15-alpine3.13
+RUN apk --no-cache add gcc g++ make ca-certificates
 
 RUN mkdir /gagarin /gagarin/backend
 WORKDIR /gagarin/backend
@@ -6,12 +7,14 @@ WORKDIR /gagarin/backend
 ADD go.mod go.sum ./
 RUN go mod download
 ADD main.go .
-ADD cert cert
 ADD gateway gateway
 ADD ./gen/api ./gen/api
 ADD handlers handlers
 ADD statik statik
+ADD cert cert
 
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags "-s" -a -installsuffix cgo -o main .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "-s" -a -installsuffix cgo -o main-linux-arm64 main.go
 
-CMD ["/bin/bash"]
+CMD ["/bin/sh"]
+
+EXPOSE 9244 9245

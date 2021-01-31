@@ -85,18 +85,18 @@ buildgo:
 
 builddocker:
 
-    docker build -t durdn/build-project-name -f ./Dockerfile.build .
+	docker build -t durdn/build-project-name -f ./Dockerfile.build .
 
-    docker run -t durdn/build-project-name /bin/true
+	docker run -t durdn/build-project-name /bin/true
 
-    docker cp `docker ps -q -n=1`:/main .
+	docker cp `docker ps -q -n=1`:/main .
 
-    chmod 755 ./main
+	chmod 755 ./main
 
-    docker build --rm=true --tag=durdn/project-name -f Dockerfile.static .
+	docker build --rm=true --tag=durdn/project-name -f Dockerfile.static .
 
 run: builddocker
 
-    docker run 
+	docker run 
 
-        -p 9245:9245 durdn/project-name
+		-p 9245:9245 durdn/project-name

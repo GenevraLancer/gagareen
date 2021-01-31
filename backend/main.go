@@ -23,7 +23,7 @@ func main() {
 	grpclog.SetLoggerV2(log)
 
 	//Specify the port to listen for client requests
-	addr := "localhost:9244"
+	addr := ":9244"
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatalln("Failed to listen:", err)

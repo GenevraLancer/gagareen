@@ -1,0 +1,10 @@
+# Create a minimal container to run a Golang static binary
+FROM tianon/true
+
+EXPOSE 9244 9245
+
+COPY cert cert
+ADD main-linux-arm64 /
+ENV PORT=9245
+
+CMD ["/main-linux-arm64"]
