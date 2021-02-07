@@ -67,7 +67,7 @@ services:
       - es01
     networks:
        - grpc
-volumes: 
+volumes:
   data01:
     driver: local
   certs:

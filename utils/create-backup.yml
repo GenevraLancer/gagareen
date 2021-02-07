@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  create-backup:
+    container_name: es-data-backup
+    image: busybox    
+    tty: false
+    volumes:
+      - ./backup:/backup
+      - data01:/volume
+    command: sh -c "tar -cjf /backup/$${ES_BACKUP_FILE}.tar.bz2 -C /volume ./"
+volumes: 
+  data01:
+    driver: local

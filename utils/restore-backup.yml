@@ -1,0 +1,11 @@
+version: '3.8'
+
+es-data-restore:
+    image: busybox
+    volumes:
+      - ./backup:/backup
+      - data01:/volume
+    command: sh -c "rm -rf /volume/* /volume/..?* /volume/.[!.]* ; tar -C /volume/ -xjf /backup/$${ES_BACKUP_FILE}.tar.bz2"
+volumes: 
+  data01:
+    driver: local
