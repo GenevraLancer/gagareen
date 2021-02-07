@@ -32,6 +32,10 @@ givemeproto:
 	# Generate static assets for OpenAPI UI
 	statik -m -f -src third_party/OpenAPI/
 
+givemeassets:
+	# Generate static assets for OpenAPI UI
+	statik -m -f -src third_party/OpenAPI/
+
 get-tools:
 	go get \
 		github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \

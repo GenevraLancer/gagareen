@@ -5,3 +5,7 @@ backend/vendor
 client
 envoy
 docker-compose.yml
+backend/docker-gagarin-api.tar
+.DS_Store
+backend/.DS_Store
+backend/cert/localhost.cer

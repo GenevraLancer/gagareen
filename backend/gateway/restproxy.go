@@ -71,7 +71,7 @@ func Run(dialAddr string) error {
 	if port == "" {
 		port = "9245"
 	}
-	gatewayAddr := "localhost:" + port
+	gatewayAddr := ":" + port
 	gwServer := &http.Server{
 		Addr: gatewayAddr,
 		//Возвращает oa http.handler (OpenApiHandler), если url содержит /api

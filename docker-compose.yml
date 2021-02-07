@@ -1,17 +1,19 @@
 version: '3.8'
 
 services: 
-  ngnix:
-    container_name: "proxy"
-    build: 
-      context: .
-      dockerfile: nginx/Dockerfile
-    image: nginx:1.18
-    ports:
-      - "80:80"
-      - "443:443"
-    networks:
-      - grpc-gagarin
+#  ngnix:
+#    container_name: "proxy"
+#    build: 
+#      context: .
+#      dockerfile: nginx/Dockerfile
+#    image: nginx:1.18
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    depends_on:
+#      - api
+#    networks:
+#      - grpc-gagarin
 #  web:
 #    build: ./client
 #    image: gagarin-grpc-client:v1
@@ -28,23 +30,48 @@ services:
   #  restart: unless-stopped
   #  networks: 
   #    - grpc-gagarin
-#  elasticsearch:
-#    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3-arm64
-#    ports:
-#    - 9200:9200
-#    environment:
-#      - discovery.type=single-node
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: "es01"
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+      - certs:/usr/share/elasticsearch/config/certificates
+      - ${PWD}/backend/cert:/usr/share/elasticsearch/config/gagarin
+      - ${PWD}/backend/cert/server.crt:/usr/share/elasticsearch/config/gagarin/server.crt
+      - ${PWD}/backend/cert/server.key:/usr/share/elasticsearch/config/gagarin/server.key
+    environment:
+      - discovery.type=single-node
+      - xpack.license.self_generated.type=basic
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=123
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=/usr/share/elasticsearch/config/gagarin/server.key
+      - xpack.security.http.ssl.certificate_authorities=/usr/share/elasticsearch/config/certificates/ca/ca.crt
+      - xpack.security.http.ssl.certificate=/usr/share/elasticsearch/config/gagarin/server.crt
+    networks:
+       - grpc
   api:
     container_name: "gagarin-api"
-#    build: ./backend/Dockerfile.build
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.build
     image: gagarin/backend:latest
-    command: ./main-linux-arm64
     ports:
-      - "9244:9244"
-      - "9245:9245"
+      - 6060:9244
+      - 7070:9245
     restart: unless-stopped
+    depends_on:
+      - es01
     networks:
-       - grpc-gagarin
+       - grpc
+volumes: 
+  data01:
+    driver: local
+  certs:
+    driver: local
 networks:
- grpc-gagarin:
+ grpc:
    driver: bridge

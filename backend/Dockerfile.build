@@ -1,5 +1,6 @@
-FROM golang:1.15-alpine3.13
-RUN apk --no-cache add gcc g++ make ca-certificates
+#Step1:build binary file gagarin-api-linux-arm64
+FROM golang:1.15-alpine3.13 as build
+RUN apk --no-cache add git gcc g++ make ca-certificates
 
 RUN mkdir /gagarin /gagarin/backend
 WORKDIR /gagarin/backend
@@ -10,11 +11,21 @@ ADD main.go .
 ADD gateway gateway
 ADD ./gen/api ./gen/api
 ADD handlers handlers
-ADD statik statik
 ADD cert cert
+ADD statik statik 
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "-s" -a -installsuffix cgo -o main-linux-arm64 main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "-s" -a -installsuffix cgo -o gagarin-api-linux-arm64 main.go
 
-CMD ["/bin/sh"]
+#CMD ["/bin/sh"]
+
+#Step2:make a small distributive
+FROM scratch
+# Copy our static executable.
+COPY --from=build /gagarin/backend/gagarin-api-linux-arm64 /go/bin/
+COPY --from=build /gagarin/backend/cert/server.crt /cert/server.crt 
+COPY --from=build /gagarin/backend/cert/server.key /cert/server.key
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+# Run the binary
+ENTRYPOINT ["/go/bin/gagarin-api-linux-arm64"]
 
 EXPOSE 9244 9245
