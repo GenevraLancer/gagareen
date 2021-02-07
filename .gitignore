@@ -9,4 +9,4 @@ backend/docker-gagarin-api.tar
 .DS_Store
 backend/.DS_Store
 backend/cert/localhost.cer
-utils/backup/esdata.tar.bz2
+utils/backup
