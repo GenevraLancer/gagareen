@@ -1,32 +1,3 @@
-#  ngnix:
-#    container_name: "proxy"
-#    build: 
-#      context: .
-#      dockerfile: nginx/Dockerfile
-#    image: nginx:1.18
-#    ports:
-#      - "80:80"
-#      - "443:443"
-#    depends_on:
-#      - api
-#    networks:
-#      - grpc-gagarin
-#  web:
-#    build: ./client
-#    image: gagarin-grpc-client:v1
-#    ports: 
-#      - 3000:3000
-#    restart: unless-stopped
-#    networks:
-#      - grpc-gagarin
-  #proxy:
-  #  build: ./envoy
-  #  image: gagarin-grpc-envoy:v1
-  #  ports: 
-  #    - 8080:8080
-  #  restart: unless-stopped
-  #  networks: 
-  #    - grpc-gagarin
 version: '3.8'
 services:
   es01:
