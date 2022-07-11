@@ -38,7 +38,7 @@ func main() {
 
 	s := grpc.NewServer(grpc.Creds(creds))
 
-	myapi.RegisterCommonServiceServer(s, handlers.New())
+	myapi.RegisterCommonServiceServer(s, handlers.NewCommonService())
 
 	// Serve gRPC Server
 	log.Info("Serving gRPC on https://", addr)

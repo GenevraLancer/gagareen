@@ -18,7 +18,7 @@ type CommonService struct {
 }
 
 //New initializes a new QueryService struct.
-func New() *CommonService {
+func NewCommonService() *CommonService {
 	return &CommonService{
 		mu: &sync.RWMutex{}, //интерфейс
 	}

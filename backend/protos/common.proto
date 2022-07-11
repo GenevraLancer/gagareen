@@ -65,7 +65,7 @@ message GetFieldParams{
 }
 
 message AddFieldParams{
-    string systemName = 2 [json_name = "fieldSystemName"];
+    string systemName = 1 [json_name = "fieldSystemName"];
 //    string engFullName = 3;
 //    string engShortName = 4;
 //    string label = 5;
@@ -105,7 +105,3 @@ message SubscribeResponse {
     }
     repeated Event events = 3;
 */
-
-
-
-

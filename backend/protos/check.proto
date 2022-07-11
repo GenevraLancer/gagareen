@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+
+// Defines the import path that should be used to import the generated package and the package name.
+option go_package = "backend/gen/api/check;check";
+
+// These annotations are used when generating the OpenAPI file.
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+      version: "1.0";
+    };
+    schemes: HTTPS;
+  };
+
+  service FormularCheckService{
+        rpc FormularCheckSelection(CheckRequest) returns (stream CheckListResponse){
+            option (google.api.http) = {
+                post: "/api/v1/formular/check"
+                body: "*"
+                additional_bindings {
+                get: "/api/v1/formular/check"
+                }
+              };
+        }
+      }
+    
+      message CheckRequest{
+        string search = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: 'Search request', required: ['search']}];
+        int64 size = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: 'Items count on page', default: '10'}];
+        int64 from = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: 'Start items from count', default: '0'}];
+      }
+    
+      message CheckListResponse{
+        Check items=1;
+      }
+    
+      message Check{
+        string keyCDOprojectSysName=1;
+        string keyCDOprojectLabel=2;
+        string formularSysName=3;
+        string methodID=4;
+        string checkDesc=5;
+      }

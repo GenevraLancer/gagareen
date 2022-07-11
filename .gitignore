@@ -1,12 +1,27 @@
+# VSCode
 .vscode
+
+# IDEA
+.idea
+
+# MacOS
+.DS_Store
+
+# docker
 .dockerignore
 
-backend/vendor
+# сертификаты из браузера для добавления в связку ключей MacOS
+backend/cert/cdo-dev-els.pem
+
+# функции в разработке
 client
 envoy
-docker-compose.yml
+/services/
+
+# сделанный образ приложения
 backend/docker-gagarin-api.tar
-.DS_Store
-backend/.DS_Store
-backend/cert/localhost.cer
-utils/backup
+
+
+
+
+
