@@ -21,7 +21,7 @@ gRPC API должен использоваться в Студии чтобы и
 - для генерации *.swagger.json используется https://github.com/grpc-ecosystem/grpc-gateway
 - https://localhost:7070/common.swagger.json для тестирования REST API
 
-##Для запуска сервера:
+## Для запуска сервера:
 1. Если не установлен докер-клиент, то установить https://www.docker.com/products/docker-desktop
 
 2. Установите скаченный docker-gagarin-api.tar (~15Мб) в локальный реестр докера командой из командной строки
