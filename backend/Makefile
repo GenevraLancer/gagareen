@@ -44,6 +44,7 @@ get-tools:
     	google.golang.org/grpc/cmd/protoc-gen-go-grpc \
 		github.com/rakyll/statik \
 		github.com/bufbuild/buf/cmd/buf \
+		github.com/elastic/go-elasticsearch/v7 \
 
 #		golang.org/x/tools/gopls
 
@@ -55,6 +56,7 @@ install-tools:
     	google.golang.org/grpc/cmd/protoc-gen-go-grpc \
 		github.com/rakyll/statik \
 		github.com/bufbuild/buf/cmd/buf \
+		github.com/elastic/go-elasticsearch/v7 \
 		
 	# golang.org/x/tools/gopls
 

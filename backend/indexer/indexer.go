@@ -1,36 +1,30 @@
+// Package implements a client for ElastiSearch service
 package indexer
-import (  
-	"context"
-	"encoding/json"
-	"log"
-  
-	"github.com/olivere/elastic/v7"
-	 myapi "github.com/GenevraLancer/gagarin/backend/gen/api"
-	 "github.com/GenevraLancer/gagarin/backend/config"
-  )
 
-  //Обёртка для клиента es 
-  type ElasticClient struct {  
-	client *elastic.Client
-  }
-  
-  //Инициализация клиента с параметрами из .env
-  func New(url string) (*ElasticIndex, error) {  
-	config := config.GagarinConfig
-	client, err := elastic.NewClient(
-	  elastic.SetURL(viper.Get"https://localhost:9200"),
-	  elastic.SetSniff(false),
-	)
+import (
+	"log"
+
+	config "github.com/GenevraLancer/gagarin/backend/config"
+	elastic "github.com/elastic/go-elasticsearch/v7"
+	
+)
+
+var client *elastic.Client
+
+//Инициализация клиента с параметрами из .env
+func init() {
+	var err error
+	cfg := config.InitConfig()
+	client, err = elastic.NewClient(*cfg)
 	if err != nil {
-	  return nil, err
+		log.Fatalf("Error creating the client: %v", err)
 	}
 
-	fmt.Println("ElasticSearch initialized in gagarin-api...")
-	return &ElasticIndex{client}, nil
-  }
-  
-  func (r *ElasticIndex) Close() {  
-  }
-  
-  func (r *ElasticIndex) InsertField(ctx context.Context, myapi ) error { 
-  }
+	res, err := client.Info()
+	if err != nil {
+		log.Fatalf("Error getting response: %s", err)
+	}
+
+	defer res.Body.Close()
+	log.Println(res)
+}

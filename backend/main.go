@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/grpclog"
 
+	_ "github.com/GenevraLancer/gagarin/backend/indexer"
 	"github.com/GenevraLancer/gagarin/backend/gateway"
 	myapi "github.com/GenevraLancer/gagarin/backend/gen/api"
 	handlers "github.com/GenevraLancer/gagarin/backend/handlers"
@@ -39,7 +40,7 @@ func main() {
 	s := grpc.NewServer(grpc.Creds(creds))
 
 	myapi.RegisterCommonServiceServer(s, handlers.NewCommonService())
-
+	
 	// Serve gRPC Server
 	log.Info("Serving gRPC on https://", addr)
 	go func() {
@@ -48,4 +49,5 @@ func main() {
 
 	err = gateway.Run("dns:///" + addr)
 	log.Fatalln(err)
+
 }

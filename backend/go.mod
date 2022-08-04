@@ -4,15 +4,15 @@ go 1.15
 
 require (
 	github.com/bufbuild/buf v0.33.0
+	github.com/elastic/go-elasticsearch/v7 v7.17.1
 	github.com/gofrs/uuid v3.3.0+incompatible
 	github.com/golang/protobuf v1.4.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.0.1
 	github.com/klauspost/compress v1.11.4 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/olivere/elastic/v7 v7.0.22
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rakyll/statik v0.1.7
 	github.com/spf13/cobra v1.1.1 // indirect
-	github.com/spf13/viper v1.7.0
 	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5 // indirect
 	golang.org/x/mod v0.4.0 // indirect
 	golang.org/x/net v0.0.0-20201216054612-986b41b23924 // indirect

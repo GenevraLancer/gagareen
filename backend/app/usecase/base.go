@@ -1,21 +1,21 @@
 package entity
 
 //Роль разработчика формуляров в Студии
-type FormularDeveloper struct {
-	checkSelection() //Подбор метода проверки из es
-}
+//type FormularDeveloper struct {
+//	checkSelection bool //Подбор метода проверки из es
+//}
 
 //Роль продакт менеджера Студии 
-type ProductManager struct {
-	viewSearchStats() //Посмотреть частоту использования разработчиками формуляров поискового движка
-}
+//type ProductManager struct {
+//	viewSearchStats string //Посмотреть частоту использования разработчиками формуляров поискового движка
+//}
 
-type Formular struct {
-	check   //проверки
-	project //проект, в котором разрабатыватся формуляр
-}
+//type Formular struct {
+//	check string   //проверки
+//	project string //проект, в котором разрабатыватся формуляр
+//}
 
-type Check struct {
-	methodID //имя бина и метода
-	desc     //описание проверки
-}
+//type Check struct {
+//	methodID string //имя бина и метода
+//	desc string    //описание проверки
+//}
