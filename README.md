@@ -58,3 +58,4 @@ docker-compose -f restore-backup.yml run --rm restore_backup
 ## Запуск докера локально
 1. из папки utils команду для создания тома с самоподписанным сертификатом ```docker-compose -f create-certs.yml run --rm create_certs```
 2. из папки gagarin команду для поднятия ноды ES и ноды GRPC сервера ```docker-compose up -d```
+3. если докер останавливается командой ```docker-compose down --volumes``` то надо выполнять п1-2, если командой ```docker-compose down``` то только п2
